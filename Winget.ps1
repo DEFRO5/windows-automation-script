@@ -166,10 +166,10 @@ Function InstallPackages {
     [string[]] $allpackages = $neededpackage.keys | Sort-Object
     $key_count = 0
     foreach ($keys in $allpackages) { 
-        Write-Host ("{0}. {1}" -f ($key_count + 1), $keys) 
+        Write-Host ("{0}. {1}" -f ($key_count + 1), $keys) -ForegroundColor Yellow
         $key_count++
     }
-    Write-Host ("{0}. Go Back" -f ($neededpackage.count + 1)) -ForegroundColor Yellow
+    Write-Host ("{0}. Go Back" -f ($neededpackage.count + 1)) -ForegroundColor CYAN
     $Select_temp = Read-Host "Select your option" :
     $selectedoption = [int]$Select_temp
     if ($selectedoption -le $neededpackage.count) {
@@ -177,7 +177,7 @@ Function InstallPackages {
         if ($confirmedoption -eq "All Packages") {
             foreach ($packs in $neededpackage[$confirmedoption]) {
                 winget install $packs --silent
-            }
+            } 
         }
         else {
             winget install $neededpackage[$confirmedoption] --silent
@@ -189,8 +189,8 @@ Function InstallPackages {
                 Reverting to menu...
                     
                     " -ForegroundColor Cyan
-        DisplayPackages
     }
+    DisplayPackages
 }
 #DisplayPackagesFunction       
 Function DisplayPackages {
@@ -198,7 +198,7 @@ Function DisplayPackages {
     Write-Host "
             こんにちは, Welcome to DEFALT's windows Package installer" -ForegroundColor Red
     for ($i = 0; $i -lt $displayoptions.Length; $i++) {
-        Write-Host ("  {0}. {1}" -f ($i + 1), $displayoptions[$i] ) -ForegroundColor Yellow 
+        Write-Host ("  {0}. {1}" -f ($i + 1), ($displayoptions[$i]) ) -ForegroundColor Yellow
     }
     Write-Host ("  {0}. Exit" -f ($displayoptions.Length + 1)) -ForegroundColor Yellow
     # Get user input
@@ -214,6 +214,10 @@ Function DisplayPackages {
                  " -ForegroundColor Green
         #Exit the program
         exit
+    }
+    elseif($selection -gt ($displayoptions.Length + 1)) {
+        Write-Host " Enter a Valid option"  -ForegroundColor Cyan
+        DisplayPackages
     }
     #Function call 
     InstallPackages        
