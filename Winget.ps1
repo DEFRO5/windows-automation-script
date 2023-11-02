@@ -11,8 +11,8 @@ $displayoptions = @(
 )
 
 $packages = @{
-    "browserpackages" = @{
-        "All" = @(
+    "browserpackages"       = @{
+        "All Packages"       = @(
             "LibreWolf.Librewolf",
             "Brave.Brave",
             "Google.Chrome",
@@ -25,7 +25,7 @@ $packages = @{
     }
 
     "communicationpackages" = @{
-        "All"      = @(
+        "All Packages"      = @(
             "Discord.Discord",
             "Telegram.TelegramDesktop",
             "WhatsApp.WhatsApp",
@@ -38,7 +38,7 @@ $packages = @{
     }
 
     "devpackages"           = @{
-        "All"                        = @(
+        "All Packages"                        = @(
             "Git.Git",
             "Microsoft.VisualStudioCode",
             "GitHub.GitHubDesktop",
@@ -59,7 +59,7 @@ $packages = @{
     }
 
     "gamepackages"          = @{
-        "All"        = @(
+        "All Packages"        = @(
             "EpicGames.EpicGamesLauncher",
             "Valve.Steam",
             "GOG.Galaxy",
@@ -72,7 +72,7 @@ $packages = @{
     }
 
     "microsoftpackages"     = @{
-        "All"                         = @(
+        "All Packages"                         = @(
             "Microsoft.VCRedist.2015+.x64",
             "Microsoft.DotNet.SDK.7",
             "Microsoft.PowerShell",
@@ -85,7 +85,7 @@ $packages = @{
     }
 
     "multimediapackages"    = @{
-        "All"        = @(
+        "All Packages"        = @(
             "Spotify.Spotify",
             "Shabinder.SpotiFlyer",
             "VideoLAN.VLC"
@@ -96,7 +96,7 @@ $packages = @{
     }
 
     "ultilitypackages"      = @{
-        "All"             = @(
+        "All Packages"             = @(
             "7zip.7zip",
             "Surfshark.Surfshark",
             "qBittorrent.qBittorrent",
@@ -107,7 +107,7 @@ $packages = @{
             "Bitwarden.Bitwarden",
             "PrestonN.FreeTube"  
         )
-        "7zip"            = "7zip.7zip"
+        "seven-zip"       = "7zip.7zip"
         "Surfshark"       = "Surfshark.Surfshark"
         "qBittorrent"     = "qBittorrent.qBittorrent"
         "NVClean"         = "TechPowerUp.NVCleanstall"
@@ -119,7 +119,7 @@ $packages = @{
     }
 
     "myconfigpackages"      = @{
-        "All"                          = @(
+        "All Packages"                          = @(
             "LibreWolf.Librewolf",
             "Microsoft.VisualStudioCode",
             "Discord.Discord",
@@ -139,83 +139,84 @@ $packages = @{
         "EpicGames"                    = "EpicGames.EpicGamesLauncher"
         "Steam"                        = "Valve.Steam"
         "Microsoft VCRedist 2015+ x64" = "Microsoft.VCRedist.2015+.x64"
-        "Sevenzip"                     = "7zip.7zip"
+        "seven-zip "                   = "7zip.7zip"
         "Surfshark"                    = "Surfshark.Surfshark"
-        "QBittorrent"                  = "qBittorrent.qBittorrent"
+        "qBittorrent"                  = "qBittorrent.qBittorrent"
         "VLC"                          = "VideoLAN.VLC"
         "NVClean"                      = "TechPowerUp.NVCleanstall"
         "MSI Afterburner"              = "Guru3D.Afterburner"
     }
 }
-Function DisplayPackages {
-    while ($true) {
-        # Display package options
+#GlobalVariable
+$selection = "temp"
+#InstallPackagesFunction
+Function InstallPackages {
+    $packagearray = @(
+        "browserpackages",
+        "communicationpackages",
+        "devpackages",
+        "gamepackages",
+        "microsoftpackages",
+        "multimediapackages",
+        "ultilitypackages",
+        "myconfigpackages"
+    )
+    $selecteduseroption = $packagearray[$selection - 1]
+    $neededpackage = $packages[$selecteduseroption]
+    [string[]] $allpackages = $neededpackage.keys | Sort-Object
+    $key_count = 0
+    foreach ($keys in $allpackages) { 
+        Write-Host ("{0}. {1}" -f ($key_count + 1), $keys) 
+        $key_count++
+    }
+    Write-Host ("{0}. Go Back" -f ($neededpackage.count + 1)) -ForegroundColor Yellow
+    $Select_temp = Read-Host "Select your option" :
+    $selectedoption = [int]$Select_temp
+    if ($selectedoption -le $neededpackage.count) {
+        $confirmedoption = $allpackages[$selectedoption - 1 ]
+        if ($confirmedoption -eq "All Packages") {
+            foreach ($packs in $neededpackage[$confirmedoption]) {
+                winget install $packs --silent
+            }
+        }
+        else {
+            winget install $neededpackage[$confirmedoption] --silent
+        }
+    }
+    elseif ($selectedoption -eq $neededpackage.count + 1) {
         Write-Host "
-    こんにちは, Welcome to DEFALT's windows Package installer" -ForegroundColor Red
-        for ($i = 0; $i -lt $displayoptions.Length; $i++) {
-            Write-Host ("  {0}. {1}" -f ($i + 1), $displayoptions[$i] ) -ForegroundColor Yellow 
-        }
-        Write-Host ("  {0}. Exit" -f ($displayoptions.Length + 1)) -ForegroundColor Yellow
-        # Get user input
-        $temp = Read-Host "Enter the option number" 
-        Write-Host " "
-        $selection = [int]$temp
-        #Exit
-        if ($selection -eq ($displayoptions.Length + 1)) {
-            Write-Host "
-    
-         Exiting さようなら.......
-         
-         " -ForegroundColor Green
-            #Exit Loop
-            break 
-        }
-        #Install packages
-        Function InstallPackages {
-            $packagearray = @(
-                "browserpackages",
-                "communicationpackages",
-                "devpackages",
-                "gamepackages",
-                "microsoftpackages",
-                "multimediapackages",
-                "ultilitypackages",
-                "myconfigpackages"
-            )
-            $selecteduseroption = $packagearray[$selection - 1]
-            $neededpackage = $packages[$selecteduseroption]
-            [string[]] $allpackages = $neededpackage.keys | Sort-Object
-            $key_count = 0
-            foreach ($keys in $allpackages) { 
-                Write-Host ("{0}. {1}" -f ($key_count + 1), $keys) 
-                $key_count++
-            }
-            Write-Host ("{0}. Go Back" -f ($neededpackage.count + 1)) -ForegroundColor Yellow
-            $Select_temp = Read-Host "Select your option" :
-            $selectedoption = [int]$Select_temp
-            if ($selectedoption -le $neededpackage.count) {
-                $confirmedoption = $allpackages[$selectedoption - 1 ]
-                if ($confirmedoption -eq "All") {
-                    foreach ($packs in $neededpackage[$confirmedoption]) {
-                        winget install $packs --silent
-                    }
-                }
-                else {
-                    winget install $neededpackage[$confirmedoption] --silent
-                }
-            }
-            elseif ($selectedoption -eq $neededpackage.count + 1) {
-                Write-Host "
                  
                 Reverting to menu...
                     
                     " -ForegroundColor Cyan
-                DisplayPackages
-                break
-            }
-        }
-        InstallPackages
-    }   
+        DisplayPackages
+    }
 }
-# Call the InstallPackages function
+#DisplayPackagesFunction       
+Function DisplayPackages {
+    # Display package options
+    Write-Host "
+            こんにちは, Welcome to DEFALT's windows Package installer" -ForegroundColor Red
+    for ($i = 0; $i -lt $displayoptions.Length; $i++) {
+        Write-Host ("  {0}. {1}" -f ($i + 1), $displayoptions[$i] ) -ForegroundColor Yellow 
+    }
+    Write-Host ("  {0}. Exit" -f ($displayoptions.Length + 1)) -ForegroundColor Yellow
+    # Get user input
+    $temp = Read-Host "Enter the option number" 
+    Write-Host " "
+    $selection = [int]$temp
+    #Exit
+    if ($selection -eq ($displayoptions.Length + 1)) {
+        Write-Host "
+            
+                 Exiting さようなら.......
+                 
+                 " -ForegroundColor Green
+        #Exit the program
+        exit
+    }
+    #Function call 
+    InstallPackages        
+}
+# Call the DisplayPackages function
 DisplayPackages
