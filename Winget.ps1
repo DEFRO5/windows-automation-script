@@ -1,18 +1,19 @@
 # Define an array of package names
 $displayoptions = @(
-    "Browser",
-    "communication Tools",
-    "DEV-Tools",
+    "Custom search"
+    "Browsers",
+    "communication tools",
+    "Dev-Tools",
     "Game Launchers",
     "Microsoft tools",
-    "Multi-media Tools",
+    "Multi-media tools",
     "Utilities",
     "My Config"
 )
 
 $packages = @{
-    "browserpackages"       = @{
-        "All Packages"       = @(
+    "browserpackages"= @{
+        "All Packages"= @(
             "LibreWolf.Librewolf",
             "Brave.Brave",
             "Google.Chrome",
@@ -37,8 +38,8 @@ $packages = @{
         "Teams"    = "Microsoft.Teams"
     }
 
-    "devpackages"           = @{
-        "All Packages"                        = @(
+    "devpackages"= @{
+        "All Packages"= @(
             "Git.Git",
             "Microsoft.VisualStudioCode",
             "GitHub.GitHubDesktop",
@@ -58,8 +59,8 @@ $packages = @{
         "Docker"                     = "Docker.DockerDesktop"
     }
 
-    "gamepackages"          = @{
-        "All Packages"        = @(
+    "gamepackages"= @{
+        "All Packages"= @(
             "EpicGames.EpicGamesLauncher",
             "Valve.Steam",
             "GOG.Galaxy",
@@ -71,8 +72,8 @@ $packages = @{
         "RiotGames"  = "RiotGames.Valorant.AP"
     }
 
-    "microsoftpackages"     = @{
-        "All Packages"                         = @(
+    "microsoftpackages"= @{
+        "All Packages"= @(
             "Microsoft.VCRedist.2015+.x64",
             "Microsoft.DotNet.SDK.7",
             "Microsoft.PowerShell",
@@ -84,8 +85,8 @@ $packages = @{
         "Microsoft OneDrive"          = "Microsoft.OneDrive"
     }
 
-    "multimediapackages"    = @{
-        "All Packages"        = @(
+    "multimediapackages"= @{
+        "All Packages"= @(
             "Spotify.Spotify",
             "Shabinder.SpotiFlyer",
             "VideoLAN.VLC"
@@ -95,8 +96,8 @@ $packages = @{
         "VLC"        = "VideoLAN.VLC"
     }
 
-    "ultilitypackages"      = @{
-        "All Packages"             = @(
+    "ultilitypackages"= @{
+        "All Packages"= @(
             "7zip.7zip",
             "Surfshark.Surfshark",
             "qBittorrent.qBittorrent",
@@ -118,8 +119,8 @@ $packages = @{
         "FreeTube"        = "PrestonN.FreeTube"
     }
 
-    "myconfigpackages"      = @{
-        "All Packages"                          = @(
+    "myconfigpackages"= @{
+        "All Packages"= @(
             "LibreWolf.Librewolf",
             "Microsoft.VisualStudioCode",
             "Discord.Discord",
@@ -149,6 +150,7 @@ $packages = @{
 }
 #GlobalVariable
 $selection = "temp"
+$print_line =  "--------------------------------------------------------------------------------------------------"
 #InstallPackagesFunction
 Function InstallPackages {
     $packagearray = @(
@@ -161,7 +163,7 @@ Function InstallPackages {
         "ultilitypackages",
         "myconfigpackages"
     )
-    $selecteduseroption = $packagearray[$selection - 1]
+    $selecteduseroption = $packagearray[$selection - 2]
     $neededpackage = $packages[$selecteduseroption]
     [string[]] $allpackages = $neededpackage.keys | Sort-Object
     $key_count = 0
@@ -170,17 +172,19 @@ Function InstallPackages {
         $key_count++
     }
     Write-Host ("{0}. Go Back" -f ($neededpackage.count + 1)) -ForegroundColor CYAN
-    $Select_temp = Read-Host "Select your option" :
+    $Select_temp = $(Write-Host "") + $(Write-Host "Select your Package option: " -ForegroundColor Green -NoNewLine; Read-Host) + $(Write-Host "")
     $selectedoption = [int]$Select_temp
     if ($selectedoption -le $neededpackage.count) {
         $confirmedoption = $allpackages[$selectedoption - 1 ]
         if ($confirmedoption -eq "All Packages") {
             foreach ($packs in $neededpackage[$confirmedoption]) {
                 winget install $packs --silent
+                Write-Host $print_line
             } 
         }
         else {
             winget install $neededpackage[$confirmedoption] --silent
+            Write-Host $print_line
         }
     }
     elseif ($selectedoption -eq $neededpackage.count + 1) {
@@ -195,27 +199,34 @@ Function DisplayPackages {
     # Display package options
     Write-Host "
             こんにちは, Welcome to DEFALT's Windows Package Installer
-            " -ForegroundColor Red
+            " -ForegroundColor Magenta
     for ($i = 0; $i -lt $displayoptions.Length; $i++) {
-        Write-Host ("  {0}. {1}" -f ($i + 1), ($displayoptions[$i]) ) -ForegroundColor Yellow
+        Write-Host ("{0}. {1}" -f ($i + 1), ($displayoptions[$i]) ) -ForegroundColor Yellow
     }
-    Write-Host ("  {0}. Exit" -f ($displayoptions.Length + 1)) -ForegroundColor Yellow
+    Write-Host ("{0}. Exit" -f ($displayoptions.Length + 1)) -ForegroundColor Yellow
     # Get user input
-    $temp = Read-Host "Enter the option number" 
-    Write-Host " "
+    $temp =  $(Write-Host "") + $(Write-Host "Enter the option number: " -ForegroundColor Green -NoNewLine; Read-Host) + $(Write-Host "")
     $selection = [int]$temp
+    #CustomSearch
+    if ($selection -eq 1)
+    {    
+        #  Write-Host `n"Type your software name:"  -ForegroundColor Green  
+         $GetSoftname =  $(Write-Host "Please, Enter the Software name: " -ForegroundColor Green -NoNewLine; Read-Host) + $(Write-Host "")
+         winget search  $GetSoftname 
+         $GetSoftId = $(Write-Host "") + $(Write-Host "Please, Enter the Software ID: " -ForegroundColor Green -NoNewLine; Read-Host) + $(Write-Host "")
+         winget install $GetSoftId  --silent
+         Write-Host $print_line
+         DisplayPackages
+    }
     #Exit
-    if ($selection -eq ($displayoptions.Length + 1)) {
-        Write-Host "
-            
-                 Exiting さようなら.......
-                 
-                 " -ForegroundColor Green
+    elseif ($selection -eq ($displayoptions.Length + 1)) {
+         $(Write-Host "Exiting さようなら......." -ForegroundColor Magenta -NoNewLine;) + $(Write-Host "`n")
         #Exit the program
         exit
     }
     elseif($selection -gt ($displayoptions.Length + 1)) {
-        Write-Host " Enter a Valid option"  -ForegroundColor Cyan
+        Write-Host "Please enter a number between 1 and $($displayoptions.Count + 1) "  -ForegroundColor Cyan
+        Write-Host $print_line
         DisplayPackages
     }
     #Function call 
