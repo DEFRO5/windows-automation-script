@@ -1,7 +1,7 @@
 # Define an array of package names
 $displayoptions = @(
     "Browser",
-    "communication",
+    "communication Tools",
     "DEV-Tools",
     "Game Launchers",
     "Microsoft tools",
@@ -185,9 +185,7 @@ Function InstallPackages {
     }
     elseif ($selectedoption -eq $neededpackage.count + 1) {
         Write-Host "
-                 
-                Reverting to menu...
-                    
+Reverting to menu...               
                     " -ForegroundColor Cyan
     }
     DisplayPackages
@@ -196,7 +194,8 @@ Function InstallPackages {
 Function DisplayPackages {
     # Display package options
     Write-Host "
-            こんにちは, Welcome to DEFALT's windows Package installer" -ForegroundColor Red
+            こんにちは, Welcome to DEFALT's Windows Package Installer
+            " -ForegroundColor Red
     for ($i = 0; $i -lt $displayoptions.Length; $i++) {
         Write-Host ("  {0}. {1}" -f ($i + 1), ($displayoptions[$i]) ) -ForegroundColor Yellow
     }
