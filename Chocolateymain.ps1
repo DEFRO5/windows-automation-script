@@ -34,16 +34,17 @@ $winget_packages = @{
 function InstallSoftware {   #Chocolatey Function Installing Softwares
     $nextcontinue = $true
     while ($nextcontinue) {
-        Write-Host "Select software to install:"
-        Write-Host "1. Install all software"
+        Write-Host "Select software to install:" -ForegroundColor Green
+        Write-Host "1. Install all software" -ForegroundColor Blue
 
         $i = 2
         $choco_packages.GetEnumerator() | ForEach-Object {
-            Write-Host ("{0}. {1}" -f $i, $_.Key)
+            Write-Host ("{0}. {1}"-f $i, $_.Key) -ForegroundColor Blue
             $i++
         }
 
-        $choice = Read-Host "Enter the number of the software you want to install (e.g., 1 for all, 2 for Vlc.., or 'q' to quit): "
+        Write-Host -NoNewline -ForegroundColor Blue "Select (1 for all, 2 for Vlc..., or 'q' to quit): "
+        $choice = Read-Host 
 
         if ($choice -eq 'q') {
             $nextcontinue = $false
@@ -52,20 +53,18 @@ function InstallSoftware {   #Chocolatey Function Installing Softwares
 
         if ($choice -eq 1) {
             foreach ($package in $choco_packages.Values) {
-                Write-Host "Installing $package..."
+                Write-Host "Installing $package..." -ForegroundColor Yellow
                 Invoke-Expression "choco install $package -y"
             }
         } elseif ($choice -ge 2) {
             $selectedAlias = ($choco_packages.Keys | Select-Object -Index ($choice - 2))
             $selectedPackage = $choco_packages[$selectedAlias]
-            Write-Host "Installing $selectedAlias..."
+            Write-Host "Installing $selectedAlias..." -ForegroundColor Yellow
             if ($selectedPackage) {
                 Invoke-Expression "choco install $selectedPackage -y -q"
-            } else {
-                Write-Host "Invalid choice"
             }
         } else {
-            Write-Host "Invalid choice"
+            Write-Host "Invalid choice" -ForegroundColor DarkRed
         }
     }
 }
@@ -73,15 +72,16 @@ function InstallSoftware {   #Chocolatey Function Installing Softwares
 function InstallBrowser{   #Chocolatey Function Installing Browser
     $browsercontinue = $true
     while ($browsercontinue){
-        Write-Host "Select Browser to install"
+        Write-Host "Select Browser to install" -ForegroundColor Green
 
         $i = 1
         $browserpackages.GetEnumerator() | ForEach-Object {
-            Write-Host ("{0}. {1}" -f $i, $_.Key)
+            Write-Host ("{0}. {1}" -f $i, $_.Key) -ForegroundColor Blue
             $i++
         }
     
-        $choice = Read-Host "Enter the number of the Browser you want to install (e.g., 1 for Brave.Brave, or 'q' to quit): "
+        Write-Host -NoNewline -ForegroundColor Blue "Select (1 for Brave..., or 'q' to quit): "
+        $choice = Read-Host
         if ($choice -eq 'q') {
             $browsercontinue = $false
             break
@@ -89,11 +89,11 @@ function InstallBrowser{   #Chocolatey Function Installing Browser
         if ($choice -ge 1) {
             $selectedPackage = ($browserpackages.Keys | Select-Object -Index ($choice - 1))
             $selected_appended_package = $browserpackages[$selectedPackage]
-            Write-Host "Installing $selectedPackage..."
+            Write-Host "Installing $selectedPackage..." -ForegroundColor Yellow
             if ($selected_appended_package) {
                 Invoke-Expression "choco install $selected_appended_package -y -q"
         } else {
-            Write-Host "Invalid choice. Please select a valid option."
+            Write-Host "Invalid choice. Please select a valid option." -ForegroundColor DarkRed
         }
     }
 }
@@ -103,14 +103,15 @@ function InstallBrowser{   #Chocolatey Function Installing Browser
 function Uninstallsoftware{   #Chocolatey Function Uninstalling Softwares
     $uninstallsoftware = $true
     while ($uninstallsoftware){
-        Write-Host "Select Software to Uninstall"
+        Write-Host "Select Software to Uninstall" -ForegroundColor Green
 
         $i = 1
         $choco_packages.GetEnumerator() | ForEach-Object {
-            Write-Host ("{0}. {1}" -f $i, $_.Key)
+            Write-Host ("{0}. {1}" -f $i, $_.Key) -ForegroundColor Blue
             $i++
         }
-        $choice = Read-Host "Enter the number of the software you want to uninstall (e.g., 1 for Brave.Brave, or 'q' to quit): "
+        Write-Host -NoNewline -ForegroundColor Blue "Select (1 for Steam..., or 'q' to quit): "
+        $choice = Read-Host
 
         if ($choice -eq 'q') {
             $uninstallsoftware = $false
@@ -120,14 +121,14 @@ function Uninstallsoftware{   #Chocolatey Function Uninstalling Softwares
         if ($choice -ge 1) {
             $selectedAlias = ($choco_packages.Keys | Select-Object -Index ($choice - 1))
             $selectedPackage = $choco_packages[$selectedAlias]
-            Write-Host "Installing $selectedAlias..."
+            Write-Host "Installing $selectedAlias..." -ForegroundColor Yellow
             if ($selectedPackage) {
                 Invoke-Expression "choco uninstall $selectedPackage -y"
             }else {
             Write-Host "Bug"
         }
         }else{
-            Write-Host "Invalid choice. Please select a valid option."
+            Write-Host "Invalid choice. Please select a valid option." -ForegroundColor DarkRed
         }
 
     }
@@ -137,15 +138,16 @@ function Uninstallsoftware{   #Chocolatey Function Uninstalling Softwares
 function WingetInstallSoftware {    #Winget Function Installing Softwares 
     $wingetinstall_software = $true
     while ($wingetinstall_software) {
-        Write-Host "Select Software to Install"
-        Write-Host "1. Install all software"
+        Write-Host "Select Software to Install" -ForegroundColor Green
+        Write-Host "1. Install all software" -ForegroundColor Blue
         
         $i = 2
         $winget_packages.GetEnumerator() | ForEach-Object {
-            Write-Host ("{0}. {1}" -f $i, $_.Key)
+            Write-Host ("{0}. {1}" -f $i, $_.Key) -ForegroundColor Blue
             $i++
         }
-        $choice = Read-Host "Enter the number of the software you want to install (e.g., 1 for all, 2 for Vlc.., or 'q' to quit): "
+        Write-Host -NoNewline -ForegroundColor Blue "Select (1 for all, 2 for Vlc..., or 'q' to quit): "
+        $choice = Read-Host 
 
         if($choice -eq 'q'){
             $wingetinstall_software = $false
@@ -153,18 +155,18 @@ function WingetInstallSoftware {    #Winget Function Installing Softwares
         }
         if ($choice -eq 1) {
             foreach ($package in $winget_packages.Values) {
-                Write-Host "Installing $package..."
+                Write-Host "Installing $package..." -ForegroundColor Yellow
                 winget install $package -h
             }
         }
         elseif ($choice -ge 2){
             $selectedAlias = ($winget_packages.Keys | Select-Object -Index ($choice - 2))
             $selectedPackage = $winget_packages[$selectedAlias]
-            Write-Host "Installing $selectedAlias..."
+            Write-Host "Installing $selectedAlias..." -ForegroundColor Yellow
             winget install $selectedPackage -h
         }
         else {
-            Write-Host "Invalid action. Please select a valid option."
+            Write-Host "Invalid action. Please select a valid option." -ForegroundColor DarkRed
         }
     }
 }
@@ -172,14 +174,15 @@ function WingetInstallSoftware {    #Winget Function Installing Softwares
 function WingetUninstaller{  #Winget Function Uninstalling Software
     $wingetuninstaller = $true
     while($wingetuninstaller) {
-        Write-Host "Select Software to Install"
+        Write-Host "Select Software to Install" -ForegroundColor Green
 
         $winget_packages.GetEnumerator() | ForEach-Object {
-            Write-Host ("{0}. {1}" -f $i, $_.Key)
+            Write-Host ("{0}. {1}" -f $i, $_.Key) -ForegroundColor Blue
             $i++
         }
 
-        $choice = Read-Host "Enter the number of the software you want to uninstall (e.g. 1. for Vlc.., or 'q' to quit): "
+        Write-Host -NoNewline -ForegroundColor Blue "Select (1. for Vlc.., or 'q' to quit): "
+        $choice = Read-Host
 
         if($choice -eq 'q'){
             $wingetuninstaller = $false
@@ -188,10 +191,10 @@ function WingetUninstaller{  #Winget Function Uninstalling Software
         if ($choice -ge 1) {
             $selectedAlias = ($winget_packages.Keys | Select-Object -Index ($choice - 1))
             $selectedPackage = $winget_packages[$selectedAlias]
-            Write-Host "Installing $selectedAlias..."
+            Write-Host "Installing $selectedAlias..." -ForegroundColor Yellow
             winget uninstall --id $selectedPackage -h
         } else {
-            Write-Host "Invalid choice. Please select a valid option."
+            Write-Host "Invalid choice. Please select a valid option." -ForegroundColor DarkRed
         }
 
     }
@@ -212,12 +215,13 @@ if (-not $chocoInstalled) {
 }
 
 while ($true) {
-    Write-Host "Select the Package Manager"
-    Write-Host "1. Chocolatey"
-    Write-Host "2. Winget"
-    Write-Host "3. Quit"
+    Write-Host "Select the Package Manager" -ForegroundColor Green
+    Write-Host "1. Chocolatey" -ForegroundColor Blue
+    Write-Host "2. Winget" -ForegroundColor Blue
+    Write-Host "3. Quit" -ForegroundColor Blue
 
-    $package_manager = Read-Host "Enter the number of the package manager you want to use: "
+    Write-Host -NoNewline -ForegroundColor Blue "Select 1 or 2 (3 for Exit):  "
+    $package_manager = Read-Host
 
     if ($package_manager -eq '3') {
         break
@@ -230,35 +234,37 @@ while ($true) {
         $package_manager_access = 2
     }
     else {
-        Write-Host "Invalid option. Please select a valid package manager."
+        Write-Host "Invalid option. Please select a valid package manager." -ForegroundColor DarkRed 
         continue
     }
 
     if ($package_manager_access -eq 1) {
-        Write-Host "Chocolatey Package Manager Menu"
-        Write-Host "1. Install Software"
-        Write-Host "2. Install Browser (Under Development)"
-        Write-Host "3. Uninstall Software"
-        Write-Host "4. Quit"
+        Write-Host "Chocolatey Package Manager Menu" -ForegroundColor Green
+        Write-Host "1. Install Software" -ForegroundColor Blue
+        Write-Host "2. Install Browser" -ForegroundColor Blue
+        Write-Host "3. Uninstall Software" -ForegroundColor Blue
+        Write-Host "4. Quit" -ForegroundColor Blue
 
-        $action = Read-Host "Enter the number of the action you want to perform:"
+        Write-Host -NoNewline -ForegroundColor Blue "Select 1,2 or 3 (4 to Exit): "
+        $action = Read-Host 
 
         switch ($action) {
             '1' { InstallSoftware }
-            '2' { Write-Host "Under Development" }
+            '2' { InstallBrowser }
             '3' { UninstallSoftware }
             '4' { break }
-            default { Write-Host "Invalid action. Please select a valid option." }
+            default { Write-Host "Invalid action. Please select a valid option." -ForegroundColor DarkRed } 
         }
     }
     elseif ($package_manager_access -eq 2) {
-        Write-Host "Winget Package Manager Menu"
-        Write-Host "1. Install Software"
-        Write-Host "2. Install Browser (Under Development)"
-        Write-Host "3. Uninstall Software"
-        Write-Host "4. Quit"
+        Write-Host "Winget Package Manager Menu" -ForegroundColor Green
+        Write-Host "1. Install Software" -ForegroundColor Blue
+        Write-Host "2. Install Browser (Under Development)" -ForegroundColor Blue
+        Write-Host "3. Uninstall Software" -ForegroundColor Blue
+        Write-Host "4. Quit" -ForegroundColor Blue
 
-        $action = Read-Host "Enter the number of the action you want to perform:"
+        Write-Host -NoNewline -ForegroundColor Blue "Select 1,2 or 3 (4 to Exit): "
+        $action = Read-Host
 
         switch ($action) {
             '1' { WingetInstallSoftware }
@@ -270,4 +276,4 @@ while ($true) {
     }
 }
 
-Write-Host "Thank you for Using. Made with Love :)"
+Write-Host "Thank you for Using. Made with Love :)" -ForegroundColor DarkMagenta
