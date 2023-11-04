@@ -222,7 +222,7 @@ Function DisplayPackages {
     elseif ($selection -eq ($displayoptions.Length + 1)) {
          $(Write-Host "Exiting さようなら......." -ForegroundColor Magenta -NoNewLine;) + $(Write-Host "`n")
         #Exit the program
-        exit
+        Break
     }
     elseif($selection -gt ($displayoptions.Length + 1)) {
         Write-Host "Please enter a number between 1 and $($displayoptions.Count + 1) "  -ForegroundColor Cyan
