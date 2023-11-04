@@ -148,7 +148,7 @@ $packages = @{
         "MSI Afterburner"              = "Guru3D.Afterburner"
     }
 }
-#GlobalVariable
+#GlobalVariable's
 $selection = "temp"
 $print_line =  "--------------------------------------------------------------------------------------------------"
 #InstallPackagesFunction
@@ -188,18 +188,13 @@ Function InstallPackages {
         }
     }
     elseif ($selectedoption -eq $neededpackage.count + 1) {
-        Write-Host "
-Reverting to menu...               
-                    " -ForegroundColor Cyan
-    }
+        $(Write-Host "`n") + $(Write-Host "Reverting to menu..." -ForegroundColor Cyan) }
     DisplayPackages
 }
 #DisplayPackagesFunction       
 Function DisplayPackages {
     # Display package options
-    Write-Host "
-            こんにちは, Welcome to DEFALT's Windows Package Installer
-            " -ForegroundColor Magenta
+    $(Write-Host "`n") + $(Write-Host "             こんにちは, Welcome to DEFALT's Windows Package Installer" -ForegroundColor Magenta) + $(Write-Host "`n")
     for ($i = 0; $i -lt $displayoptions.Length; $i++) {
         Write-Host ("{0}. {1}" -f ($i + 1), ($displayoptions[$i]) ) -ForegroundColor Yellow
     }
@@ -221,12 +216,12 @@ Function DisplayPackages {
     #Exit
     elseif ($selection -eq ($displayoptions.Length + 1)) {
          $(Write-Host "Exiting さようなら......." -ForegroundColor Magenta -NoNewLine;) + $(Write-Host "`n")
-        #Exit the program
-        Break
+         #Exit the program
+         Start-Sleep -s 3
+         Exit
     }
     elseif($selection -gt ($displayoptions.Length + 1)) {
-        Write-Host "Please enter a number between 1 and $($displayoptions.Count + 1) "  -ForegroundColor Cyan
-        Write-Host $print_line
+       $( Write-Host "Please enter a number between 1 and $($displayoptions.Count + 1) "  -ForegroundColor Cyan) + $(Write-Host "`n")
         DisplayPackages
     }
     #Function call 
