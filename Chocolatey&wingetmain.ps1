@@ -259,7 +259,7 @@ while ($true) {
     elseif ($package_manager_access -eq 2) {
         Write-Host "Winget Package Manager Menu" -ForegroundColor Green
         Write-Host "1. Install Software" -ForegroundColor Blue
-        Write-Host "2. Install Browser (Under Development)" -ForegroundColor Blue
+        Write-Host "2. Install Browser (Under Development)" -ForegroundColor Blue #Still under testing phase.
         Write-Host "3. Uninstall Software" -ForegroundColor Blue
         Write-Host "4. Quit" -ForegroundColor Blue
 
