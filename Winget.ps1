@@ -79,7 +79,7 @@ $packages = @{
             "Microsoft.PowerShell",
             "Microsoft.OneDrive"
         )
-        "Microsoft.VCRedist.2022.arm64" = "Microsoft.VCRedist.2022.arm64"
+        "Microsoft.VCRedist.2015+.x64" = "Microsoft.VCRedist.2015+.x64"
         "Microsoft DotNet SDK 7"      = "Microsoft.DotNet.SDK.7"
         "Microsoft PowerShell"        = "Microsoft.PowerShell"
         "Microsoft OneDrive"          = "Microsoft.OneDrive"
@@ -133,7 +133,7 @@ $packages = @{
             "VideoLAN.VLC",
             "TechPowerUp.NVCleanstall",
             "Guru3D.Afterburner",
-            "Microsoft.VCRedist.2022.arm64"
+            "Microsoft.VCRedist.2015+.x64"
         )
         "LibreWolf"                    = "LibreWolf.Librewolf"
         "Microsoft Visual Studio Code" = "Microsoft.VisualStudioCode"
